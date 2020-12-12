@@ -1,3 +1,6 @@
+from typing import List, Tuple
+
+
 def get_lines(filename):
     output = []
     with open(filename, 'r') as f:
@@ -10,7 +13,7 @@ def get_lines(filename):
     return output
 
 
-def product(numbers):
+def product(numbers: List[int]):
     a = 1
     for n in numbers:
         a *= n

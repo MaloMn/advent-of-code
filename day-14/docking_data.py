@@ -1,19 +1,18 @@
 from utils import get_lines
 import re
+from typing import List
 
 
 class Memory:
-
     def __init__(self):
-        self.mem = []
+        self.mem = dict()
 
-    def insert(self, index, value):
-        if index >= len(self.mem):
-            self.mem += [0]*(index - len(self.mem) + 1)
+    def insert(self, index: int, value: int):
+        # print(index, value)
         self.mem[index] = value
 
     def sum(self):
-        return sum(self.mem)
+        return sum(self.mem.values())
 
 
 def bin_to_dec(binary: str) -> int:
@@ -35,17 +34,41 @@ def dec_to_bin(decimal: int) -> str:
     return output
 
 
-def apply_mask(nb: int, m: str) -> int:
+def apply_mask(nb: int, m: str) -> List[int]:
     nb_binary = dec_to_bin(nb)
     nb_binary = list(nb_binary)
-    print(nb_binary, len(nb_binary))
 
     # Applying the mask
-    for i, c in enumerate(m):
-        if c != 'X':
-            nb_binary[i] = c
+    floating = []
+    for j, c in enumerate(m):
+        if c == '1':
+            nb_binary[j] = '1'
+        elif c == 'X':
+            floating.append(j)
 
-    return bin_to_dec(''.join(nb_binary))
+    output = []
+    for line in gray_code(len(floating)):
+        for index, position in enumerate(floating):
+            nb_binary[position] = str(line[index])
+        output.append(''.join(nb_binary))
+
+    if len(output) == 0:
+        output = [''.join(nb_binary)]
+
+    return [bin_to_dec(a) for a in output]
+
+
+def gray_code(nb_bits):
+    if nb_bits == 1:
+        return [(0,), (1,)]
+    else:
+        piece = gray_code(nb_bits - 1)
+        output = []
+        for line in piece:
+            output.append((0,) + line)
+        for line in piece[::-1]:
+            output.append((1,) + line)
+        return output
 
 
 if __name__ == "__main__":
@@ -57,7 +80,8 @@ if __name__ == "__main__":
             mask = d[7:]
         else:
             i, n = re.findall(r'\d+', d)
-            n = apply_mask(int(n), mask)
-            mem.insert(int(i), n)
+            locations = apply_mask(int(i), mask)
+            for loc in locations:
+                mem.insert(loc, int(n))
 
     print(mem.sum())

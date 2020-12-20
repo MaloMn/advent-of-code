@@ -2,13 +2,12 @@ from utils import get_lines
 import re
 
 
-def _find_next_op(formula):
-    match = re.search(r'\d+[+*]\d+', formula)
-    end = match.span()[1]
+def _find_next_op(formula, op):
+    match = re.search(r'\d+[' + op + ']\d+', formula)
+    span = match.span()
     f = match.group()
     a, b = re.findall(r'\d+', f)
-    op = re.search(r'[+*]', f).group()
-    return a, op, b, end
+    return a, op, b, span
 
 
 def compute(calculation) -> int:
@@ -17,7 +16,7 @@ def compute(calculation) -> int:
 
 
 def _compute(formula) -> int:
-    # print('f', formula)
+    print('f', formula)
     if '(' in formula:
         start = len(formula) - formula[::-1].find('(')
         end = formula[start:].find(')') + start
@@ -25,15 +24,17 @@ def _compute(formula) -> int:
         formula = formula[:start - 1] + str(sub_result) + formula[end + 1:]
         return _compute(formula)
 
-    elif '+' in formula or '*' in formula:
-        a, op, b, end = _find_next_op(formula)
+    elif '+' in formula:
+        a, op, b, span = _find_next_op(formula, '+')
+        temp = int(a) + int(b)
 
-        if op == '+':
-            temp = int(a) + int(b)
-        else:
-            temp = int(a) * int(b)
+        return _compute(formula[:span[0]] + str(temp) + formula[span[1]:])
 
-        return _compute(str(temp) + formula[end:])
+    elif '*' in formula:
+        a, op, b, span = _find_next_op(formula, '*')
+        temp = int(a) * int(b)
+
+        return _compute(formula[:span[0]] + str(temp) + formula[span[1]:])
 
     else:
         return int(formula)

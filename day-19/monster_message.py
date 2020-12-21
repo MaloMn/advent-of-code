@@ -2,14 +2,14 @@ from typing import Tuple
 from utils import get_lines
 import re
 
+
 def gather_rules(file):
     output = {}
     for line in file:
         nb = line.split(':')[0]
         values = line.split(':')[1]
-        values = values.replace(' ', '')
         values = values.replace('"', '')
-        values = list(values)
+        values = re.findall(r'(\d+|\||\w+)', values)
         output[nb] = values
     return output
 
@@ -63,6 +63,10 @@ if __name__ == "__main__":
     data = get_lines('message.txt')
     rules = gather_rules(data[:data.index('')])
 
+    result = 0
     texts = data[data.index('') + 1:]
     for z in texts:
-        print(apply_rules(rules, '0', z))
+        if apply_rules(rules, '0', z):
+            result += 1
+
+    print(result)

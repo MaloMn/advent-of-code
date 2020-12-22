@@ -1,0 +1,36 @@
+a b c d (contains dairy, fish)
+e f g a (contains dairy)
+c f (contains soy)
+c a g (contains fish)
+
+
+b : dairy, fish
+d : dairy, fish
+e : dairy
+g : dairy, fish
+
+
+a : dairy, fish
+b : dairy, fish
+c : dairy, fish
+d : dairy, fish
+
+e : dairy
+f : dairy
+g : dairy
+a : dairy
+
+c : soy
+f : soy
+
+c : fish
+a : fish
+g : fish
+
+xor's
+fish [c, a, g] [a, b, c, d]
+soy [c, f]
+dairy [e, f, g, a], [a, b, c, d]
+
+
+

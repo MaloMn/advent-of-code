@@ -110,18 +110,15 @@ if __name__ == "__main__":
     map_image = []
 
     for line in full_map:
-        lines = [[] for i in range(10)]
+        lines = [[] for i in range(1, 9)]
         for i in line:
-            # print(i)
-            for j in range(10):
-                # print(tiles[i][j])
-                lines[j] += tiles[i][j]
+            for j in range(1, 9):
+                lines[j - 1] += tiles[i][j][1:len(tiles[i][j]) - 1]
         map_image += lines
 
-    map_image = [a[1:len(a)-1] for a in map_image][1:len(map_image) - 1]
+    # map_image = [a[1:] for a in map_image][1:]
     text = '\n'.join([''.join(a) for a in map_image])
     print(text)
 
     with open('sea_monsters.txt', 'w') as f:
         f.write(text)
-

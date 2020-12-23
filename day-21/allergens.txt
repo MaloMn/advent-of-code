@@ -1,19 +1,4 @@
-a b c d (contains dairy, fish)
-e f g a (contains dairy)
-c f (contains soy)
-c a g (contains fish)
-
-
-dairy : a b c d
-dairy : e f g a
-fish : a b c d
-fish : c a g
-soy : c f
-
-
-g in fish but not in dairy/fish {c, a, g} - {a, b, c, d}
-f, g, e in dairy but not in dairy/fish {a, f, g, e} - {a, b, c, d}
-b and d not in dairy nor fish --> {a, b, c, d} - ({e, f, g, a} + {a, c, g})
-remove f from the list as it is alone in soy possible_ingredients = {c, f}
-
-b, d, e, f, g
+mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
+trh fvjkl sbzzf mxmxvkd (contains dairy)
+sqjhc fvjkl (contains soy)
+sqjhc mxmxvkd sbzzf (contains fish)

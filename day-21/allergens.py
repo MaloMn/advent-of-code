@@ -25,19 +25,28 @@ def find_impossible_foods(foods):
         ingr = food[0]
         allergies = food[1]
         impossibles = set(ingr)
-        print(impossibles)
-        for f in foods:
-            if f != food and are_elements_in_list(f[1], *allergies):
-                impossibles.difference(set(f[0]))
-                print('a', impossibles, f[1])
+        print(impossibles, allergies)
 
+        unique_union = set()
+        for f in foods:
+            if f != food:
+                if len(f[1]) >= len(allergies) and are_elements_in_list(f[1], *allergies):
+                    impossibles.difference(set(f[0]))
+                    print('a', impossibles, f[1], f[0])
+                elif len(f[1]) == 1 and f[1][0] in allergies:
+                    unique_union = unique_union.union(set(f[0]))
+                    print('b', unique_union, f[1])
+
+        impossibles.difference(unique_union)
+        print('global diff', impossibles, unique_union)
         output.union(impossibles)
+
+    return output
 
 
 if __name__ == "__main__":
     data = get_lines('allergens.txt')
     foods = get_foods(data)
-    print(foods)
-
+    # print(foods)
     print(find_impossible_foods(foods))
 
